@@ -231,10 +231,10 @@ class RemotePlusClient {
     }
 
     /**
-     * @return mixed
+     * @return RemotePlusResponse
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function run() {
+    public function run(): RemotePlusResponse {
         $this->generateBodyForRequest();
         $this->sendRequest();
 
@@ -277,7 +277,6 @@ class RemotePlusClient {
      * Extracted this into it's own function so I can stub and test without
      * having to make a request to the IDC server.
      * @return string
-     * @codeCoverageIgnore
      */
     protected function getBodyFromResponse(): string {
         return (string)$this->response->getBody();

@@ -39,14 +39,6 @@ class RemotePlusResponse {
         return $this->responses;
     }
 
-    /**
-     * @param string $key Right now this will almost always be a CUSIP.
-     * @return mixed
-     */
-    public function getResponseByKey(string $key){
-        return $this->responses[$key];
-    }
-
 
     /**
      * Pass an item code into this method, and it will return an array of identifier => itemValue. A convenience method.
