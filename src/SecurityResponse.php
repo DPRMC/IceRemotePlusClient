@@ -1,6 +1,6 @@
 <?php
 
-namespace DPRMC\InteractiveData;
+namespace DPRMC\IceRemotePlusClient;
 
 use Carbon\Carbon;
 use DPRMC\IceRemotePlusClient\Exceptions\ItemDoesNotExistInSecurityResponse;
