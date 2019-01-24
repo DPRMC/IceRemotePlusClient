@@ -141,4 +141,26 @@ class RemotePlusClientTest extends TestCase {
     }
 
 
+    /**
+     * @test
+     * @group item
+     */
+    public function getItemShouldReturnValue() {
+        $user          = $_ENV[ 'ICE_TEST_USER' ];
+        $pass          = $_ENV[ 'ICE_TEST_PASS' ];
+        $cusip         = '17307GNX2'; // Does not have a price for 2018-12-31
+        $date          = '2018-12-31';
+        $item          = 'IEBID';
+        $expectedValue = '90.48611';
+        $response      = RemotePlusClient::instantiate( $user, $pass )
+                                         ->addIdentifier( $cusip )
+                                         ->addDate( $date )
+                                         ->addItem( $item )
+                                         ->run();
+        $responses     = $response->getResponses();
+        $value         = $responses[ $cusip ]->getItem( $item );
+        $this->assertEquals( $expectedValue, $value );
+    }
+
+
 }

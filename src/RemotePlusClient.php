@@ -173,6 +173,7 @@ class RemotePlusClient {
 
 
     /**
+     * Add an item code to the list of data points we want to retrieve with this request.
      * @param string $item
      * @return $this
      */
@@ -180,6 +181,18 @@ class RemotePlusClient {
         if ( FALSE === $this->itemExists( $item ) ):
             $this->items[] = $item;
         endif;
+        return $this;
+    }
+
+    /**
+     * A convenience method to add a list of item codes to this request.
+     * @param array $items
+     * @return $this
+     */
+    public function addItems( array $items ) {
+        foreach ( $items as $item ):
+            $this->addItem( $item );
+        endforeach;
         return $this;
     }
 
@@ -209,7 +222,7 @@ class RemotePlusClient {
      * @param bool $debug
      * @return $this
      */
-    public function setDebug(bool $debug){
+    public function setDebug( bool $debug ) {
         $this->remotePlusDebug = $debug;
         return $this;
     }
@@ -355,7 +368,7 @@ class RemotePlusClient {
             return trim( $item, '"' );
         }, $errorParts );
 
-        throw new RemotePlusError( $errorParts[ 1 ], 0, null, $errorParts[ 0 ] );
+        throw new RemotePlusError( $errorParts[ 1 ], 0, NULL, $errorParts[ 0 ] );
     }
 
     /**

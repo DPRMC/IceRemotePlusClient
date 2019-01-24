@@ -81,7 +81,7 @@ class SecurityResponse {
      * “!N8” an error code 8000 was returned
      */
     public function addItem( string $code, $value = NULL ) {
-        $this->items[ $code ] = $value;
+        $this->items[ $code ] = trim( $value, ' "' );
         return $this;
     }
 
@@ -98,7 +98,7 @@ class SecurityResponse {
     }
 
     /**
-     * @param string $item
+     * @param string $item The item code of the value you want to retrieve.
      * @return mixed
      * @throws ItemDoesNotExistInSecurityResponse
      * @throws ItemValueNotAvailable
@@ -111,13 +111,13 @@ class SecurityResponse {
      * @throws ItemValueNotAvailableBecauseNotReported
      */
     public function getItem( string $item ) {
-        if (false === $this->itemExists($item)):
+        if ( FALSE === $this->itemExists( $item ) ):
             throw new ItemDoesNotExistInSecurityResponse();
         endif;
 
         $value = $this->items[ $item ];
 
-        switch ($value):
+        switch ( $value ):
             case '!NA':
                 throw new ItemValueNotAvailable();
             case '!NH':
