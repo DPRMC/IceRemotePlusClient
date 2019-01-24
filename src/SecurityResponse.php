@@ -3,6 +3,15 @@
 namespace DPRMC\InteractiveData;
 
 use Carbon\Carbon;
+use DPRMC\IceRemotePlusClient\Exceptions\ItemDoesNotExistInSecurityResponse;
+use DPRMC\IceRemotePlusClient\Exceptions\ItemValueNotAvailable;
+use DPRMC\IceRemotePlusClient\Exceptions\ItemValueNotAvailableBecauseErrorCode5000;
+use DPRMC\IceRemotePlusClient\Exceptions\ItemValueNotAvailableBecauseErrorCode6000;
+use DPRMC\IceRemotePlusClient\Exceptions\ItemValueNotAvailableBecauseErrorCode7000;
+use DPRMC\IceRemotePlusClient\Exceptions\ItemValueNotAvailableBecauseErrorCode8000;
+use DPRMC\IceRemotePlusClient\Exceptions\ItemValueNotAvailableBecauseHoliday;
+use DPRMC\IceRemotePlusClient\Exceptions\ItemValueNotAvailableBecauseNotExpected;
+use DPRMC\IceRemotePlusClient\Exceptions\ItemValueNotAvailableBecauseNotReported;
 
 /**
  * Represents all of the data items requested for a specific security.
@@ -51,8 +60,8 @@ class SecurityResponse {
      * @param string $date
      * @return $this
      */
-    public function addDate(string $date){
-        $this->date = Carbon::parse($date);
+    public function addDate( string $date ) {
+        $this->date = Carbon::parse( $date );
         return $this;
     }
 
@@ -76,7 +85,59 @@ class SecurityResponse {
         return $this;
     }
 
+    /**
+     * Logic method to improve readability.
+     * @param string $item
+     * @return bool
+     */
+    protected function itemExists( string $item ): bool {
+        if ( isset( $this->items[ $item ] ) ):
+            return TRUE;
+        endif;
+        return FALSE;
+    }
 
+    /**
+     * @param string $item
+     * @return mixed
+     * @throws ItemDoesNotExistInSecurityResponse
+     * @throws ItemValueNotAvailable
+     * @throws ItemValueNotAvailableBecauseErrorCode5000
+     * @throws ItemValueNotAvailableBecauseErrorCode6000
+     * @throws ItemValueNotAvailableBecauseErrorCode7000
+     * @throws ItemValueNotAvailableBecauseErrorCode8000
+     * @throws ItemValueNotAvailableBecauseHoliday
+     * @throws ItemValueNotAvailableBecauseNotExpected
+     * @throws ItemValueNotAvailableBecauseNotReported
+     */
+    public function getItem( string $item ) {
+        if (false === $this->itemExists($item)):
+            throw new ItemDoesNotExistInSecurityResponse();
+        endif;
+
+        $value = $this->items[ $item ];
+
+        switch ($value):
+            case '!NA':
+                throw new ItemValueNotAvailable();
+            case '!NH':
+                throw new ItemValueNotAvailableBecauseHoliday();
+            case '!NE':
+                throw new ItemValueNotAvailableBecauseNotExpected();
+            case '!NR':
+                throw new ItemValueNotAvailableBecauseNotReported();
+            case '!N5':
+                throw new ItemValueNotAvailableBecauseErrorCode5000();
+            case '!N6':
+                throw new ItemValueNotAvailableBecauseErrorCode6000();
+            case '!N7':
+                throw new ItemValueNotAvailableBecauseErrorCode7000();
+            case '!N8':
+                throw new ItemValueNotAvailableBecauseErrorCode8000();
+        endswitch;
+
+        return $value;
+    }
 
 
 }

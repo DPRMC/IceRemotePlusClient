@@ -132,6 +132,7 @@ class RemotePlusClientTest extends TestCase {
         $item  = 'IEBID';
 
         RemotePlusClient::instantiate( $user, $pass )
+                        ->setDebug( TRUE )
                         ->addIdentifier( $cusip )
                         ->addDate( $date )
                         ->addItem( $item )

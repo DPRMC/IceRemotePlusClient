@@ -4,6 +4,7 @@ namespace DPRMC\IceRemotePlusClient;
 
 use DPRMC\CUSIP;
 use DPRMC\IceRemotePlusClient\Exceptions\DateSentToConstructorIsNotParsable;
+use DPRMC\IceRemotePlusClient\Exceptions\RemotePlusError;
 use DPRMC\InteractiveData\SecurityResponse;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
@@ -59,7 +60,7 @@ class RemotePlusClient {
     /**
      * @var bool A parameter we pass in the request to Remote Plus to enable debugging information to be returned.
      */
-    protected $remotePlusDebug = TRUE;
+    protected $remotePlusDebug = FALSE;
 
     /**
      * @var float The HTTP version that Remote Plus expects for requests.
@@ -204,6 +205,15 @@ class RemotePlusClient {
         return $this;
     }
 
+    /**
+     * @param bool $debug
+     * @return $this
+     */
+    public function setDebug(bool $debug){
+        $this->remotePlusDebug = $debug;
+        return $this;
+    }
+
 
     /**
      * Returns the value required by Remote Plus for the Authorization header.
@@ -232,6 +242,7 @@ class RemotePlusClient {
 
     /**
      * @return RemotePlusResponse
+     * @throws RemotePlusError
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function run(): RemotePlusResponse {
@@ -285,9 +296,12 @@ class RemotePlusClient {
 
     /**
      * @return RemotePlusResponse
+     * @throws RemotePlusError
      */
     protected function processResponse(): RemotePlusResponse {
         $body = $this->getBodyFromResponse();
+
+        $this->checkForError( $body );
 
         $itemValues = explode( "\n", $body );
         $itemValues = array_map( 'trim', $itemValues );
@@ -313,6 +327,35 @@ class RemotePlusClient {
         endforeach;
 
         return $remotePlusResponse;
+    }
+
+    /**
+     * Throws an error if the response from RemotePlus indicated an error occurred.
+     * If you contact Interactive Data for help with a system message, please note the error number and the
+     * exact wording of the message.
+     * @param string $body
+     * @throws RemotePlusError
+     */
+    protected function checkForError( string $body ) {
+
+        // All RemotePlus errors start with "!E
+        // So if the body does not start with those 3 characters, then no error occurred, and we can continue.
+        if ( '"!E' != substr( $body, 0, 3 ) ):
+            return;
+        endif;
+
+        $itemValues = explode( "\n", $body );
+        $itemValues = array_map( 'trim', $itemValues );
+        $itemValues = array_filter( $itemValues );
+        array_pop( $itemValues ); // Remove the CRC check.
+
+        $errorLine  = $itemValues[ 0 ];
+        $errorParts = explode( '","', $errorLine );
+        $errorParts = array_map( function ( $item ) {
+            return trim( $item, '"' );
+        }, $errorParts );
+
+        throw new RemotePlusError( $errorParts[ 1 ], 0, null, $errorParts[ 0 ] );
     }
 
     /**
