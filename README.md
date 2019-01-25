@@ -1,6 +1,10 @@
 # The ICE Remote Plus Client
 
-[![Coverage Status](https://coveralls.io/repos/github/DPRMC/IceRemotePlusClient/badge.svg?branch=master)](https://coveralls.io/github/DPRMC/IceRemotePlusClient?branch=master) [![Build Status](https://travis-ci.org/DPRMC/IceRemotePlusClient.svg?branch=master)](https://travis-ci.org/DPRMC/IceRemotePlusClient) [![License](https://poser.pugx.org/dprmc/iceremoteplusclient/license)](https://packagist.org/packages/dprmc/iceremoteplusclient) [![Latest Stable Version](https://poser.pugx.org/dprmc/iceremoteplusclient/version)](https://packagist.org/packages/dprmc/iceremoteplusclient) [![Total Downloads](https://poser.pugx.org/dprmc/iceremoteplusclient/downloads)](https://packagist.org/packages/dprmc/iceremoteplusclient)
+![](https://img.shields.io/coveralls/github/DPRMC/IceRemotePlusClient.svg)
+![](https://img.shields.io/travis/DPRMC/IceRemotePlusClient.svg)
+![](https://img.shields.io/packagist/l/DPRMC/ice-remote-plus-client.svg)
+[![](https://img.shields.io/packagist/v/dprmc/ice-remote-plus-client.svg)](https://packagist.org/packages/dprmc/ice-remote-plus-client)
+![](https://img.shields.io/github/issues/DPRMC/IceRemotePlusClient.svg)
 
 ## Documentation from The ICE
 https://rplus.intdata.com/documentation/RemotePlus_UserGuide.pdf

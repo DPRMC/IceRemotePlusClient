@@ -109,6 +109,8 @@ class SecurityResponse {
      * @throws ItemValueNotAvailableBecauseHoliday
      * @throws ItemValueNotAvailableBecauseNotExpected
      * @throws ItemValueNotAvailableBecauseNotReported
+     * @note From Client Support at ICE Data Services: unfortunately we don't have examples for the others (!NR, !N5, !N6, !N7, and !N8).
+     * ...so as a result those Exceptions can't be tested with our unit tests.
      */
     public function getItem( string $item ) {
         if ( FALSE === $this->itemExists( $item ) ):

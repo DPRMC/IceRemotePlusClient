@@ -6,6 +6,7 @@ use DPRMC\IceRemotePlusClient\Exceptions\DateSentToConstructorIsNotParsable;
 use DPRMC\IceRemotePlusClient\Exceptions\ItemDoesNotExistInSecurityResponse;
 use DPRMC\IceRemotePlusClient\Exceptions\ItemValueNotAvailable;
 use DPRMC\IceRemotePlusClient\Exceptions\ItemValueNotAvailableBecauseHoliday;
+use DPRMC\IceRemotePlusClient\Exceptions\ItemValueNotAvailableBecauseNotExpected;
 use DPRMC\IceRemotePlusClient\Exceptions\RemotePlusError;
 use DPRMC\IceRemotePlusClient\RemotePlusClient;
 use PHPUnit\Framework\TestCase;
@@ -100,7 +101,7 @@ class RemotePlusClientErrorsTest extends TestCase {
 
     /**
      * @test
-     * @group error1
+     * @group error
      */
     public function requestForOldDataShouldThrowException() {
         $this->expectException( RemotePlusError::class );
@@ -116,6 +117,47 @@ class RemotePlusClientErrorsTest extends TestCase {
                                      ->run();
         $responses = $response->getResponses();
         $responses[ $cusip ]->getItem( 'IEBID' );
+    }
+
+
+    /**
+     * @test
+     * @group error
+     */
+    public function requestForEquityPriceOnHolidayShouldThrowException() {
+        $this->expectException( ItemValueNotAvailableBecauseHoliday::class );
+        $user       = $_ENV[ 'ICE_TEST_USER' ];
+        $pass       = $_ENV[ 'ICE_TEST_PASS' ];
+        $identifier = 'IBM';
+        $date       = '2019-01-01';
+        $item       = 'PRC';
+        $response   = RemotePlusClient::instantiate( $user, $pass )
+                                      ->addIdentifier( $identifier )
+                                      ->addDate( $date )
+                                      ->addItem( $item )
+                                      ->run();
+        $responses  = $response->getResponses();
+        $responses[ $identifier ]->getItem( $item );
+    }
+
+    /**
+     * @test
+     * @group err1
+     */
+    public function requestForMdatOnIbmShouldThrowException() {
+        $this->expectException( ItemValueNotAvailableBecauseNotExpected::class );
+        $user       = $_ENV[ 'ICE_TEST_USER' ];
+        $pass       = $_ENV[ 'ICE_TEST_PASS' ];
+        $identifier = 'IBM';
+        $date       = '2019-01-01';
+        $item       = 'MDAT';
+        $response   = RemotePlusClient::instantiate( $user, $pass )
+                                      ->addIdentifier( $identifier )
+                                      ->addDate( $date )
+                                      ->addItem( $item )
+                                      ->run();
+        $responses  = $response->getResponses();
+        $prc        = $responses[ $identifier ]->getItem( $item );
     }
 
 }
