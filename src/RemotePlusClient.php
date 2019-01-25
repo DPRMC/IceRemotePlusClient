@@ -5,7 +5,6 @@ namespace DPRMC\IceRemotePlusClient;
 use DPRMC\CUSIP;
 use DPRMC\IceRemotePlusClient\Exceptions\DateSentToConstructorIsNotParsable;
 use DPRMC\IceRemotePlusClient\Exceptions\RemotePlusError;
-use DPRMC\InteractiveData\SecurityResponse;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;

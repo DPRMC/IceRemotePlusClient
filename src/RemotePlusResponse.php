@@ -3,8 +3,6 @@
 namespace DPRMC\IceRemotePlusClient;
 
 
-use DPRMC\InteractiveData\SecurityResponse;
-
 /**
  * A wrapper class around a bunch of SecurityResponse objects. This represents all of the data returned by RemotePlus.
  * Class RemotePlusResponse
