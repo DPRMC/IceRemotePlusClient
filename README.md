@@ -1,10 +1,12 @@
 # The ICE Remote Plus Client
 
+[![](https://img.shields.io/packagist/v/dprmc/ice-remote-plus-client.svg)](https://packagist.org/packages/dprmc/ice-remote-plus-client)
 ![](https://img.shields.io/coveralls/github/DPRMC/IceRemotePlusClient.svg)
+[![](https://img.shields.io/scrutinizer/g/DPRMC/IceRemotePlusClient.svg)](https://scrutinizer-ci.com/g/DPRMC/IceRemotePlusClient)
 ![](https://img.shields.io/travis/DPRMC/IceRemotePlusClient.svg)
 ![](https://img.shields.io/packagist/l/DPRMC/ice-remote-plus-client.svg)
-[![](https://img.shields.io/packagist/v/dprmc/ice-remote-plus-client.svg)](https://packagist.org/packages/dprmc/ice-remote-plus-client)
 ![](https://img.shields.io/github/issues/DPRMC/IceRemotePlusClient.svg)
+
 
 ## Documentation from The ICE
 https://rplus.intdata.com/documentation/RemotePlus_UserGuide.pdf
