@@ -12,23 +12,44 @@ class RemotePlusClientVariedItemsTest extends TestCase {
     /**
      * @test
      * @group vary
+     * The AAMT item does not take a date. It returns the Current Annualized Payment Amount is the annual interest
+     * payable for fixed income securities, shown as a percentage of par value, or the annualized indicated annual
+     * dividend for equities. So the expected value of the AAMT item will change from day to day.
      */
     public function aamtShouldReturnValidData() {
         $user               = $_ENV[ 'ICE_TEST_USER' ];
         $pass               = $_ENV[ 'ICE_TEST_PASS' ];
         $cusip              = '17307GNX2';
-        $date               = '2018-12-31';
         $item               = 'AAMT';
-        $expectedValue      = 4.36625;
         $remotePlusResponse = RemotePlusClient::instantiate( $user, $pass )
                                               ->addCusip( $cusip )
-                                              ->addDate( $date )
                                               ->addItem( $item )
                                               ->run();
         $securityResponse   = $remotePlusResponse->getByIdentifier( $cusip );
-        $this->assertEquals( $expectedValue, $securityResponse->getItem( $item ) );
-
+        $this->assertNotEmpty( $securityResponse->getItem( $item ) );
     }
+
+
+    /**
+     * The AAMT item does not take a date.
+     * ACCDT: The final day on which interest accrues at the current rate for the corresponding payment date.
+     * @test
+     * @group vary
+     */
+    public function accdtShouldReturnValidData() {
+        $user               = $_ENV[ 'ICE_TEST_USER' ];
+        $pass               = $_ENV[ 'ICE_TEST_PASS' ];
+        $cusip              = '17307GNX2';
+        $item               = 'ACCDT';
+        $expectedValue      = '20181226'; // Something like this, but it will change depending when the test is run.
+        $remotePlusResponse = RemotePlusClient::instantiate( $user, $pass )
+                                              ->addCusip( $cusip )
+                                              ->addItem( $item )
+                                              ->run();
+        $securityResponse   = $remotePlusResponse->getByIdentifier( $cusip );
+        $this->assertNotEmpty( $securityResponse->getItem( $item ) );
+    }
+
 
     /**
      * @test
@@ -51,27 +72,6 @@ class RemotePlusClientVariedItemsTest extends TestCase {
 
     }
 
-
-    /**
-     * @test
-     * @group vary
-     */
-    public function accdtShouldReturnValidData() {
-        $user               = $_ENV[ 'ICE_TEST_USER' ];
-        $pass               = $_ENV[ 'ICE_TEST_PASS' ];
-        $cusip              = '17307GNX2';
-        $date               = '2018-12-31';
-        $item               = 'ACCDT';
-        $expectedValue      = '20181226';
-        $remotePlusResponse = RemotePlusClient::instantiate( $user, $pass )
-                                              ->addCusip( $cusip )
-                                              ->addDate( $date )
-                                              ->addItem( $item )
-                                              ->run();
-        $securityResponse   = $remotePlusResponse->getByIdentifier( $cusip );
-        $this->assertEquals( $expectedValue, $securityResponse->getItem( $item ) );
-
-    }
 
 
     /**

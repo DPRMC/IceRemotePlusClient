@@ -324,8 +324,12 @@ class RemotePlusClient {
 
         foreach ( $this->identifiers as $i => $identifier ):
             $securityResponse     = SecurityResponse::instantiate()
-                                                    ->addIdentifier( $identifier )
-                                                    ->addDate( $this->date );
+                                                    ->addIdentifier( $identifier );
+
+            if ( isset( $this->date ) ):
+                $securityResponse->addDate( $this->date );
+            endif;
+
             $individualItemValues = explode( ',', $itemValues[ $i ] );
 
             foreach ( $individualItemValues as $j => $item ):
