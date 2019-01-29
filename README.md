@@ -7,6 +7,11 @@
 ![](https://img.shields.io/packagist/l/DPRMC/ice-remote-plus-client.svg)
 ![](https://img.shields.io/github/issues/DPRMC/IceRemotePlusClient.svg)
 
+## Important Notice Regarding RMBS PRC Availability
+> RMBS securities are expected to post by 16:00 EST.
+>
+> -- <cite>Jon Anderson - Client Support - ICE  Data Services - 2019-01-29</cite>
+
 
 ## Documentation from The ICE
 https://rplus.intdata.com/documentation/RemotePlus_UserGuide.pdf
