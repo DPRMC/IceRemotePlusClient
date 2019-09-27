@@ -6,6 +6,7 @@
 ![](https://img.shields.io/travis/DPRMC/IceRemotePlusClient.svg)
 ![](https://img.shields.io/packagist/l/DPRMC/ice-remote-plus-client.svg)
 ![](https://img.shields.io/github/issues/DPRMC/IceRemotePlusClient.svg)
+![Packagist](https://img.shields.io/packagist/dt/dprmc/ice-remote-plus-client)
 
 ## Important Notice Regarding RMBS PRC Availability
 > RMBS securities are expected to post by 16:00 EST.
