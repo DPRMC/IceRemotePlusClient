@@ -15,11 +15,10 @@
         "dprmc/cusip": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
         "psr/log": "^1.1",
-        "nesbot/carbon": "^1.36"
+        "nesbot/carbon": "^2.26"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.5",
-        "php-coveralls/php-coveralls": "^2.1"
+        "phpunit/phpunit": "^8.4"
     },
     "autoload": {
         "psr-4": {
