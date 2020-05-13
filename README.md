@@ -8,6 +8,12 @@
 ![](https://img.shields.io/github/issues/DPRMC/IceRemotePlusClient.svg)
 ![Packagist](https://img.shields.io/packagist/dt/dprmc/ice-remote-plus-client)
 
+## Update to Price Availability
+> Here's the link for our RemotePlus Events website where you see the expected times for each event in RemotePlus.
+> http://rplus.intdata.com/help/rpevents.html
+
+Diffrent types of securities are available at different times. 
+
 ## Important Notice Regarding RMBS PRC Availability
 > RMBS securities are expected to post by 16:00 EST.
 >
