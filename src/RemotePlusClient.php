@@ -317,7 +317,7 @@ class RemotePlusClient {
 
         $itemValues = explode( "\n", $body );
         $itemValues = array_map( 'trim', $itemValues );
-        $itemValues = array_filter( $itemValues );
+        $itemValues = array_filter( $itemValues, 'strlen' );
         array_pop( $itemValues ); // Remove the CRC check.
 
         $remotePlusResponse = new RemotePlusResponse();
@@ -362,7 +362,7 @@ class RemotePlusClient {
 
         $itemValues = explode( "\n", $body );
         $itemValues = array_map( 'trim', $itemValues );
-        $itemValues = array_filter( $itemValues );
+        $itemValues = array_filter( $itemValues, 'strlen' );
         array_pop( $itemValues ); // Remove the CRC check.
 
         $errorLine  = $itemValues[ 0 ];
