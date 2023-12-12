@@ -171,6 +171,13 @@ class RemotePlusClient {
     }
 
 
+
+    public function addSedol( string $sedol): static {
+        $this->addIdentifier( 'S:' . $sedol );
+        return $this;
+    }
+
+
     /**
      * Add an item code to the list of data points we want to retrieve with this request.
      * @param string $item
