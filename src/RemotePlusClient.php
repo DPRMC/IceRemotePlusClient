@@ -163,8 +163,8 @@ class RemotePlusClient {
      * @param string $cusip A CUSIP security identifier.
      * @return $this
      */
-    public function addCusip( string $cusip ) {
-        if ( CUSIP::isCUSIP( $cusip ) ):
+    public function addCusip( string $cusip, bool $validateCusipFormat = TRUE ): static {
+        if ( ! $validateCusipFormat || CUSIP::isCUSIP( $cusip ) ):
             $this->addIdentifier( $cusip );
         endif;
         return $this;
@@ -323,8 +323,8 @@ class RemotePlusClient {
         $remotePlusResponse = new RemotePlusResponse();
 
         foreach ( $this->identifiers as $i => $identifier ):
-            $securityResponse     = SecurityResponse::instantiate()
-                                                    ->addIdentifier( $identifier );
+            $securityResponse = SecurityResponse::instantiate()
+                                                ->addIdentifier( $identifier );
 
             if ( isset( $this->date ) ):
                 $securityResponse->addDate( $this->date );
