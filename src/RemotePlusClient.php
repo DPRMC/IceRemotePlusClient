@@ -64,7 +64,9 @@ class RemotePlusClient {
     /**
      * @var float The HTTP version that Remote Plus expects for requests.
      */
-    protected $remotePlusHttpVersion = 1.0;
+    //protected $remotePlusHttpVersion = 1.0;
+    // 2024-07-29:mdd - In response to this error from Guzzle: "HTTP/1 is not supported by the cURL handler."
+    protected $remotePlusHttpVersion = 2.0;
 
     /**
      * @var string The Content-Type header value that Remote Plus is expecting.
