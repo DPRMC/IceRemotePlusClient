@@ -9,9 +9,11 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 
+
 /**
  * This is the parent class that all API calls must extend.
  * Class RemotePlusClient
+ *
  * @package DPRMC\InteractiveData
  */
 class RemotePlusClient {
@@ -113,7 +115,9 @@ class RemotePlusClient {
 
     /**
      * Adds an array of security identifiers to the list you want to retrieve.
+     *
      * @param array $identifiers An array of security identifiers that you want to retrieve data on.
+     *
      * @return $this
      */
     public function addIdentifiers( array $identifiers ) {
@@ -125,7 +129,9 @@ class RemotePlusClient {
 
     /**
      * Adds an individual security identifier to the list you want to retrieve.
+     *
      * @param string $identifier
+     *
      * @return $this
      */
     public function addIdentifier( string $identifier ) {
@@ -137,7 +143,9 @@ class RemotePlusClient {
 
     /**
      * Logic function to improve readability.
+     *
      * @param string $identifier
+     *
      * @return bool
      */
     protected function identifierExists( string $identifier ): bool {
@@ -149,7 +157,9 @@ class RemotePlusClient {
 
     /**
      * A wrapper around the addIdentifiers() fluent method when the identifiers are known to a list of CUSIPs.
+     *
      * @param array $cusips An array of CUSIP security identifiers.
+     *
      * @return $this
      */
     public function addCusips( array $cusips ) {
@@ -162,27 +172,54 @@ class RemotePlusClient {
 
     /**
      * Adds an individual CUSIP to the list of security identifiers you want to retrieve.
+     *
      * @param string $cusip A CUSIP security identifier.
+     *
      * @return $this
      */
     public function addCusip( string $cusip, bool $validateCusipFormat = TRUE ): static {
-        if ( ! $validateCusipFormat || CUSIP::isCUSIP( $cusip ) ):
+        if ( !$validateCusipFormat || CUSIP::isCUSIP( $cusip ) ):
             $this->addIdentifier( $cusip );
         endif;
         return $this;
     }
 
 
-
-    public function addSedol( string $sedol): static {
+    public function addSedol( string $sedol ): static {
         $this->addIdentifier( 'S:' . $sedol );
         return $this;
     }
 
 
     /**
+     * This method can take an array of CUSIPs and/or SEDOLs and add them to the list of
+     * identifiers that will be queried on ICE's system.
+     *
+     * @param array $identifiers
+     *
+     * @return $this
+     * @throws \Exception
+     */
+    public function addIdentifiersOfUnknownTypes( array $identifiers ): static {
+        foreach ( $identifiers as $identifier ):
+
+            if ( CUSIP::isCUSIP( $identifier ) ):
+                $this->addCusip( $identifier );
+            elseif ( CUSIP::isSedol( $identifier ) ):
+                $this->addSedol( $identifier );
+            else:
+                throw new \Exception( "The identifier [" . $identifier . "] is not a valid CUSIP or SEDOL." );
+            endif;
+        endforeach;
+        return $this;
+    }
+
+
+    /**
      * Add an item code to the list of data points we want to retrieve with this request.
+     *
      * @param string $item
+     *
      * @return $this
      */
     public function addItem( string $item ) {
@@ -194,7 +231,9 @@ class RemotePlusClient {
 
     /**
      * A convenience method to add a list of item codes to this request.
+     *
      * @param array $items
+     *
      * @return $this
      */
     public function addItems( array $items ) {
@@ -206,7 +245,9 @@ class RemotePlusClient {
 
     /**
      * A logic function to improve readability.
+     *
      * @param string $item
+     *
      * @return bool
      */
     protected function itemExists( string $item ): bool {
@@ -218,6 +259,7 @@ class RemotePlusClient {
 
     /**
      * @param string $date A string date that can be parsed by PHP's strtotime() function.
+     *
      * @return $this
      * @throws DateSentToConstructorIsNotParsable
      */
@@ -228,6 +270,7 @@ class RemotePlusClient {
 
     /**
      * @param bool $debug
+     *
      * @return $this
      */
     public function setDebug( bool $debug ) {
@@ -240,7 +283,7 @@ class RemotePlusClient {
      * Returns the value required by Remote Plus for the Authorization header.
      *
      * @param string $username The username set by Interactive Data
-     * @param string $pass The password assigned by Interactive Data
+     * @param string $pass     The password assigned by Interactive Data
      *
      * @return string The value needed for the Authorization header.
      */
@@ -250,10 +293,11 @@ class RemotePlusClient {
 
     /**
      * Encodes the user and pass as required by the Basic Authorization.
+     *
      * @see https://en.wikipedia.org/wiki/Basic_access_authentication
      *
      * @param string $username The username set by Interactive Data
-     * @param string $pass The password assigned by Interactive Data
+     * @param string $pass     The password assigned by Interactive Data
      *
      * @return string The base64 encoded user:pass string.
      */
@@ -275,6 +319,7 @@ class RemotePlusClient {
 
     /**
      * Sends the request to Remote Plus, and saves the Response object into our local $response property.
+     *
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     protected function sendRequest() {
@@ -290,7 +335,9 @@ class RemotePlusClient {
 
     /**
      * The RemotePlus system requires dates to be formatted as yyyymmdd
+     *
      * @param string $date Any string that can be parsed by PHP's strtotime()
+     *
      * @return string The $date parameter formatted as yyyymmdd (or in PHP's syntax: Ymd)
      * @throws \DPRMC\IceRemotePlusClient\Exceptions\DateSentToConstructorIsNotParsable
      */
@@ -308,6 +355,7 @@ class RemotePlusClient {
     /**
      * Extracted this into it's own function so I can stub and test without
      * having to make a request to the IDC server.
+     *
      * @return string
      */
     protected function getBodyFromResponse(): string {
@@ -358,7 +406,9 @@ class RemotePlusClient {
      * Throws an error if the response from RemotePlus indicated an error occurred.
      * If you contact Interactive Data for help with a system message, please note the error number and the
      * exact wording of the message.
+     *
      * @param string $body
+     *
      * @throws RemotePlusError
      */
     protected function checkForError( string $body ) {
